@@ -8,13 +8,19 @@ public class DragManager : MonoBehaviour
     private const string FileName = "uiData.json";
     //private const string FileName = "defaultData.json";
     private const string DefaultFile = "defaultData.json";
+    private const float AnimDuration = 0.5f;
     
     [SerializeField] private Drag[] dragElements;
     [SerializeField] private Slider scaleSlider;
     [SerializeField] private Slider opacitySlider;
+    [Space(10)]
+    [SerializeField] private RectTransform messageObj;
+    [SerializeField] private Text messageText;
 
     private Drag activeElement;
     private List<DataUI> elementsData;
+    
+    
     
     // Start is called before the first frame update
     void Start()
@@ -85,6 +91,38 @@ public class DragManager : MonoBehaviour
         }
         
         FileHandler.SaveToJSON<DataUI>(elementsData, FileName);
+        StartCoroutine(MessageAnim());
+    }
+
+    private IEnumerator MessageAnim()
+    {
+        Vector2 startPos = messageObj.anchoredPosition;
+        Vector2 endPos = new Vector2(0, -100f);
+        messageText.text = "Saved!";
+
+        float elapsedTime = 0;
+        float progress = 0;
+        while (progress <= 1)
+        {
+            messageObj.anchoredPosition = Vector2.Lerp(startPos, endPos, progress);
+            elapsedTime += Time.unscaledDeltaTime;
+            progress = elapsedTime / AnimDuration;
+            yield return null;
+        }
+
+        messageObj.anchoredPosition = endPos;
+
+        yield return new WaitForSeconds(1f);
+        
+        elapsedTime = 0;
+        progress = 0;
+        while (progress <= 1)
+        {
+            messageObj.anchoredPosition = Vector2.Lerp(endPos, startPos, progress);
+            elapsedTime += Time.unscaledDeltaTime;
+            progress = elapsedTime / AnimDuration;
+            yield return null;
+        }
     }
 
     public void DefaultData()

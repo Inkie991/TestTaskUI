@@ -2361,6 +2361,8 @@ MonoBehaviour:
   - {fileID: 1113451746}
   scaleSlider: {fileID: 3952796263037944682}
   opacitySlider: {fileID: 822601976}
+  messageObj: {fileID: 217226839}
+  messageText: {fileID: 1465128571}
 --- !u!1 &1394840717
 GameObject:
   m_ObjectHideFlags: 0
