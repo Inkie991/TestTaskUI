@@ -16,7 +16,7 @@ public class Drag : MonoBehaviour
     private RectTransform rect;
     private List<Image> images = new List<Image>();
 
-    public DataUI dataUI;
+    [HideInInspector] public DataUI dataUI;
 
     public void Startup()
     {
@@ -27,7 +27,7 @@ public class Drag : MonoBehaviour
         images.Remove(images[images.Count - 1]);
         highlighter.SetActive(false);
         
-        //StartSetings();
+        StartSetings();
     }
 
     private void StartSetings()
@@ -54,7 +54,7 @@ public class Drag : MonoBehaviour
         UpdateData();
     }
 
-    private void UpdateData()
+    public void UpdateData()
     {
         dataUI.id = id;
         dataUI.posX = rect.position.x;

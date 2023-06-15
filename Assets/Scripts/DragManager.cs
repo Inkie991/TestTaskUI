@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class DragManager : MonoBehaviour
 {
-    //private const string FileName = "uiData.json";
-    private const string FileName = "defaultData.json";
+    private const string FileName = "uiData.json";
+    //private const string FileName = "defaultData.json";
     private const string DefaultFile = "defaultData.json";
     
     [SerializeField] private Drag[] dragElements;
@@ -20,8 +20,7 @@ public class DragManager : MonoBehaviour
     void Start()
     {
         elementsData = FileHandler.ReadListFromJSON<DataUI>(FileName);
-        if (elementsData.Count < 1) elementsData = FileHandler.ReadListFromJSON<DataUI>(DefaultFile);
-        Debug.Log(elementsData);
+        if (elementsData.Count == 0) elementsData = FileHandler.ReadListFromJSON<DataUI>(DefaultFile);
 
         for (int i = 0; i < dragElements.Length; i++)
         {
@@ -36,12 +35,18 @@ public class DragManager : MonoBehaviour
             dragElements[i].isActive = false;
             dragElements[i].id = i;
         }
+        
+        elementsData.Clear();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (activeElement != null) activeElement.UpdateSizeAndOpacity(scaleSlider.value / 100, opacitySlider.value / 100);
+        foreach (var drag in dragElements)
+        {
+            drag.UpdateData();
+        }
     }
 
     private void SetSliders()
@@ -72,6 +77,8 @@ public class DragManager : MonoBehaviour
 
     public void SaveData()
     {
+        elementsData.Clear();
+        
         foreach (var dragable in dragElements)
         {
             elementsData.Add(dragable.dataUI);

@@ -17,8 +17,17 @@ public static class FileHandler {
         WriteFile (GetPath (filename), content);
     }
 
-    public static List<T> ReadListFromJSON<T> (string filename) {
-        string content = ReadFile (GetPath (filename));
+    public static List<T> ReadListFromJSON<T> (string filename)
+    {
+        string content;
+        if (filename != "defaultData.json")
+        {
+            content = ReadFile (GetPath (filename));
+        }
+        else
+        {
+            content = ReadFile (Application.dataPath + "/" + filename);
+        }
 
         if (string.IsNullOrEmpty (content) || content == "{}") {
             return new List<T> ();
